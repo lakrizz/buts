@@ -1,3 +1,3 @@
-module github.com/lakrizz/go-buts
+module github.com/lakrizz/buts
 
 go 1.18

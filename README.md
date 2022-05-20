@@ -1,4 +1,4 @@
-# go-buts
+# buts (bounded, unique, timeout stack)
 
 This is an implementation of a bounded, unique, timeout stack, which means that this is a simple Stack with the following properties:
 - Limited Bounds (e.g., it has a capacity which will not be exceeded, overflowing items will be discarded from the bottom of the stack)
@@ -7,7 +7,7 @@ This is an implementation of a bounded, unique, timeout stack, which means that 
 
 ## Installation
 
-Simply add this repository by executing `go get github.com/lakrizz/go-buts` in your shell. It should automatically appear in your `go.mod`-file.
+Simply add this repository by executing `go get github.com/lakrizz/buts` in your shell. It should automatically appear in your `go.mod`-file.
 
 ## Example Code
 
@@ -16,7 +16,7 @@ import (
 	"log"
 	"time"
 
-	buts "github.com/lakrizz/go-buts"
+	"github.com/lakrizz/buts"
 )
 
 func main() {
