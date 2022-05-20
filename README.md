@@ -5,3 +5,7 @@ This is an implementation of a bounded, unique, timeout Stack, which means that 
 - Unique, items can of any kind but can't be contained n>1 times
 - Timeout, items have a limited lifetime in the stack. Items timed out will be removed from the stack
 
+
+## future ideas
+- ensure thread safety
+- maybe make use of generics to keep users from typecasting all the time
