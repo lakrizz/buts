@@ -5,7 +5,31 @@ This is an implementation of a bounded, unique, timeout stack, which means that 
 - Unique, items can of any kind but can't be contained n>1 times
 - Timeout, items have a limited lifetime in the stack. Items timed out will be removed from the stack
 
+## Installation
 
-## future ideas
-- ensure thread safety
-- maybe make use of generics to keep users from typecasting all the time
+Simply add this repository by executing `go get github.com/lakrizz/go-buts` in your shell. It should automatically appear in your `go.mod`-file.
+
+## Example Code
+
+```golang
+import (
+	"log"
+	"time"
+
+	buts "github.com/lakrizz/go-buts"
+)
+
+func main() {
+	b, err := buts.NewBoundedTimeoutStack(1*time.Minute, 5)
+	if err != nil {
+		log.Fatal(err)
+	}
+	b.Push(5)
+	log.Println(b.GetItemsSlice())
+}
+
+```
+
+## Future Ideas
+- Ensure thread safety
+- Make use of generics to keep users from typecasting all the time
