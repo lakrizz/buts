@@ -33,3 +33,4 @@ func main() {
 ## Future Ideas
 - Ensure thread safety
 - Make use of generics to keep users from typecasting all the time
+- Precision is currently off by about +-1.1ms (due to computation time; i'm not sure how to keep track of it right now)
