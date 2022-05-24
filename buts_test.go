@@ -156,6 +156,33 @@ func TestShouldContain(t *testing.T) {
 	}
 }
 
+func TestContainEdgePositive(t *testing.T) {
+	b, err := NewBoundedTimeoutStack(10*time.Millisecond, 5)
+	if err != nil {
+		t.Error(err)
+	}
+
+	b.Push(1)
+	time.Sleep(8900 * time.Microsecond)
+
+	if !b.Contains(1) {
+		t.Error("stack should contain item but doesn't")
+	}
+}
+
+func TestContainEdgeNegative(t *testing.T) {
+	b, err := NewBoundedTimeoutStack(10*time.Millisecond, 5)
+	if err != nil {
+		t.Error(err)
+	}
+
+	b.Push(1)
+	time.Sleep(11 * time.Millisecond)
+
+	if b.Contains(1) {
+		t.Error("stack shouldn't contain item but does")
+	}
+}
 func TestShouldNotContain(t *testing.T) {
 	b, err := NewBoundedTimeoutStack(1*time.Minute, 5)
 	if err != nil {
@@ -184,5 +211,88 @@ func TestShouldNotContainAnymore(t *testing.T) {
 
 	if b.Contains(9) {
 		t.Error("stack should not contain item but does")
+	}
+}
+func TestPopEmpty(t *testing.T) {
+	b, err := NewBoundedTimeoutStack(1*time.Minute, 5)
+	if err != nil {
+		t.Error(err)
+	}
+
+	item := b.Pop()
+	if item != nil {
+		t.Error("i was able to pop an empty stack")
+	}
+}
+
+func TestPopSimple(t *testing.T) {
+	b, err := NewBoundedTimeoutStack(1*time.Minute, 5)
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = b.Push(1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	item := b.Pop()
+
+	if item.(int) != 1 {
+		t.Error("popped item is not the same as the pushed")
+	}
+}
+func TestPopOrder(t *testing.T) {
+	b, err := NewBoundedTimeoutStack(1*time.Minute, 5)
+	if err != nil {
+		t.Error(err)
+	}
+
+	for _, i := range []int{1, 2, 3} {
+		err = b.Push(i)
+		if err != nil {
+			t.Error(err)
+		}
+	}
+
+	for _, i := range []int{3, 2, 1} {
+		item := b.Pop()
+
+		if item.(int) != i {
+			t.Error("popped item is not the same as the pushed - got", item, "expected", i)
+		}
+	}
+}
+func TestPopTimeout(t *testing.T) {
+	b, err := NewBoundedTimeoutStack(15*time.Millisecond, 5)
+	if err != nil {
+		t.Error(err)
+	}
+
+	b.Push(1)
+	time.Sleep(20 * time.Millisecond)
+	item := b.Pop()
+	if item != nil {
+		t.Error("i was able to pop an empty stack")
+	}
+}
+
+func TestPushPopPushPop(t *testing.T) {
+	b, err := NewBoundedTimeoutStack(15*time.Millisecond, 5)
+	if err != nil {
+		t.Error(err)
+	}
+
+	b.Push(1)
+	b.Push(2)
+	item := b.Pop()
+	if item.(int) != 2 {
+		t.Error("popped item is not the same as the pushed - got", item, "expected", 2)
+	}
+	b.Push(3)
+	b.Pop()
+	item = b.Pop()
+	if item.(int) != 1 {
+		t.Error("popped item is not the same as the pushed - got", item, "expected", 1)
 	}
 }
